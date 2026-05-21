@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>past | Gateway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brandBlue: '#4d72f5', brandHover: '#3b5edb', textMuted: '#64748b' } } } }
+    </script>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen relative overflow-hidden bg-[#03060a]">
+    
+    <!-- Geometric Canvas Background -->
+    <canvas id="geometry-canvas" class="absolute inset-0 z-0"></canvas>
+    
+    <!-- Dynamic Glowing Light Blur -->
+    <div class="absolute w-[400px] h-[400px] bg-brandBlue/15 rounded-full blur-[130px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"></div>
+
+    <div class="z-10 w-full max-w-sm px-4">
+        
+        <!-- Minimalist Blue Title -->
+        <div class="text-center mb-8">
+            <h1 class="text-5xl font-bold tracking-[0.25em] text-brandBlue drop-shadow-[0_0_20px_rgba(77,114,245,0.6)] uppercase ml-2">past</h1>
+            <p class="text-[10px] font-mono text-gray-500 tracking-[0.3em] uppercase mt-2">Root Gateway</p>
+        </div>
+
+        <!-- Glass Card Layout with Smooth Blur -->
+        <div class="glass-ring">
+            <div id="login-card" class="glass-card transition-all duration-300 relative overflow-hidden">
+                
+                <form onsubmit="login(event)">
+                    <!-- Root Key Field -->
+                    <div class="mb-5">
+                        <label class="block text-[10px] text-gray-400 font-mono uppercase tracking-widest mb-2 ml-1">Root Key</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-textMuted">
+                                <i class="fa-solid fa-key"></i>
+                            </span>
+                            <input type="password" id="token-input" placeholder="••••••••" class="w-full bg-black/40 border border-white/5 rounded-2xl py-3.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-brandBlue focus:bg-black/60 transition-all font-mono" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <!-- 2FA Verification Area -->
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-2 ml-1">
+                            <label class="text-[10px] text-gray-400 font-mono uppercase tracking-widest">2FA Sync</label>
+                            <span id="timer-text" class="text-[10px] font-mono text-brandBlue bg-brandBlue/10 px-2 py-0.5 rounded border border-brandBlue/20">25s</span>
+                        </div>
+                        
+                        <!-- Real-time code sync block -->
+                        <div class="flex justify-between items-center bg-black/50 rounded-xl p-3 mb-3 border border-white/5 relative overflow-hidden">
+                            <span id="generated-code" class="text-xl font-mono tracking-[0.3em] text-gray-200 ml-2">-----</span>
+                            <button type="button" onclick="generateCode()" class="text-gray-500 hover:text-brandBlue transition-colors p-2 rounded-lg hover:bg-white/5">
+                                <i class="fa-solid fa-rotate"></i>
+                            </button>
+                            <!-- Time Bar Loader -->
+                            <div class="absolute bottom-0 left-0 w-full h-[2px] bg-white/5">
+                                <div id="timer-bar" class="h-full bg-brandBlue transition-all duration-1000"></div>
+                            </div>
+                        </div>
+
+                        <!-- Code Entry -->
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-textMuted">
+                                <i class="fa-solid fa-fingerprint"></i>
+                            </span>
+                            <input type="text" id="code-input" placeholder="Enter Code" maxlength="5" class="w-full bg-black/40 border border-white/5 rounded-xl py-3 pl-11 pr-4 text-sm font-mono text-white focus:outline-none focus:border-brandBlue focus:bg-black/60 transition-all tracking-[0.2em]" autocomplete="off">
+                        </div>
+                        
+                        <!-- Error Toggles -->
+                        <p id="error-msg" class="text-[10px] font-mono text-red-400 mt-3 hidden text-center"><i class="fa-solid fa-xmark mr-1"></i> Auth Failed.</p>
+                    </div>
+
+                    <!-- Confirm/Submit Trigger -->
+                    <button type="submit" class="w-full bg-brandBlue hover:bg-brandHover text-white font-mono text-sm py-3.5 rounded-2xl transition-all duration-200 shadow-[0_0_15px_rgba(77,114,245,0.3)] active:scale-[0.97] uppercase tracking-widest font-semibold mt-2">
+                        Initialize
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Custom Brand Footer inside main wrapper -->
+        <div class="mt-8 text-center">
+            <span class="text-[10px] font-mono text-gray-500 tracking-[0.2em] uppercase border border-white/10 bg-black/20 px-4 py-2 rounded-full backdrop-blur-sm">
+                Coded By : past - 305
+            </span>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Interactive Geometrical Web Structure script embedded inside index
+        const canvas = document.getElementById('geometry-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const nodes = [];
+        for (let i = 0; i < 40; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                dx: (Math.random() - 0.5) * 1.0,
+                dy: (Math.random() - 0.5) * 1.0
+            });
+        }
+
+        function drawNodes() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(77, 114, 245, 0.2)';
+            ctx.strokeStyle = 'rgba(77, 114, 245, 0.08)';
+
+            nodes.forEach(node => {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                node.x += node.dx;
+                node.y += node.dy;
+
+                if (node.x < 0 || node.x > canvas.width) node.dx *= -1;
+                if (node.y < 0 || node.y > canvas.height) node.dy *= -1;
+
+                nodes.forEach(otherNode => {
+                    const dist = Math.sqrt((node.x - otherNode.x) ** 2 + (node.y - otherNode.y) ** 2);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(node.x, node.y);
+                        ctx.lineTo(otherNode.x, otherNode.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(drawNodes);
+        }
+        drawNodes();
+    </script>
+</body>
+</html>

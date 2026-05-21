@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>C2 Command Server</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brandBlue: '#4d72f5', bgDark: '#03060a' } } } }
+    </script>
+</head>
+<body class="flex h-screen overflow-hidden text-sm bg-[#03060a]">
+
+    <!-- Toast Notifications Area -->
+    <div id="toast-container" class="fixed bottom-12 right-6 z-50 flex flex-col gap-3"></div>
+
+    <!-- Minimalist Sidebar Grid -->
+    <aside class="w-16 md:w-56 glass-card h-full flex flex-col z-40 border-r border-white/5 shrink-0 transition-all">
+        <div class="p-4 border-b border-white/5 text-center md:text-left">
+            <h1 class="font-mono font-bold text-white tracking-widest uppercase hidden md:block">past-C2</h1>
+            <i class="fa-solid fa-terminal text-brandBlue md:hidden"></i>
+        </div>
+        <nav class="flex-1 py-4 space-y-1">
+            <button class="w-full flex items-center px-4 py-2 bg-white/5 text-gray-200 border-l-2 border-brandBlue">
+                <i class="fa-solid fa-server w-6 text-center text-xs"></i> <span class="hidden md:block text-xs">Active Sessions</span>
+            </button>
+            <button class="w-full flex items-center px-4 py-2 text-gray-500 hover:text-gray-200 hover:bg-white/5 transition-all">
+                <i class="fa-solid fa-list-check w-6 text-center text-xs"></i> <span class="hidden md:block text-xs">Task Logs</span>
+            </button>
+            <button class="w-full flex items-center px-4 py-2 text-gray-500 hover:text-gray-200 hover:bg-white/5 transition-all">
+                <i class="fa-solid fa-network-wired w-6 text-center text-xs"></i> <span class="hidden md:block text-xs">Listeners</span>
+            </button>
+        </nav>
+    </aside>
+
+    <!-- Heavy Data Dashboard Area -->
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden">
+        <!-- Top Operational Header -->
+        <header class="h-14 border-b border-white/5 flex justify-between items-center px-4 bg-black/20 shrink-0">
+            <div class="flex items-center gap-4 text-xs font-mono text-gray-400">
+                <span>[Server: <span class="text-emerald-400">Online</span>]</span>
+                <span class="hidden sm:inline">Uptime: <span id="uptime">14:02:11</span></span>
+                <span class="hidden sm:inline">Throughput: <span id="throughput">41.2 Mbps</span></span>
+            </div>
+            <!-- Search Filter Bar -->
+            <div class="relative w-48 sm:w-64">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-600 text-xs"></i>
+                <input type="text" id="search-input" onkeyup="filterTable()" placeholder="Filter PID, IP, OS..." class="w-full bg-white/5 border border-white/10 rounded px-3 py-1.5 pl-8 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-brandBlue/50 font-mono">
+            </div>
+        </header>
+
+        <!-- Main Dense Content View -->
+        <div class="flex-1 overflow-auto bg-[#03060a] p-2 sm:p-4">
+            <div class="border border-white/5 rounded bg-black/40 h-full flex flex-col">
+                <div class="overflow-auto flex-1">
+                    <table class="w-full text-left text-[10px] sm:text-xs data-table whitespace-nowrap">
+                        <thead class="text-gray-500 font-mono sticky top-0 bg-[#080b13] z-10 shadow-md">
+                            <tr>
+                                <th class="px-3 py-2 font-normal">Session ID</th>
+                                <th class="px-3 py-2 font-normal">External IP</th>
+                                <th class="px-3 py-2 font-normal">Internal IP</th>
+                                <th class="px-3 py-2 font-normal">Target OS / Arch</th>
+                                <th class="px-3 py-2 font-normal">Protocol</th>
+                                <th class="px-3 py-2 font-normal">Last Check-in</th>
+                                <th class="px-3 py-2 font-normal text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessions-table" class="font-mono text-gray-300">
+                            <!-- Populated organically by script -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Metric Bar -->
+        <footer class="h-8 border-t border-white/5 flex items-center justify-between px-4 text-[9px] font-mono text-gray-600 bg-black/40 shrink-0 uppercase tracking-widest">
+            <span>Total Active Beacons: <span id="total-beacons" class="text-gray-300">0</span></span>
+            <span>Coded By : past - 305</span>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
