@@ -1,58 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
-/* Prevent forced screen magnifying/scrolling issues on mobile devices */
+/* حل مشكلة الزوم وحركة الشاشة */
 html, body {
     overscroll-behavior-y: none;
     overscroll-behavior-x: none;
     touch-action: manipulation;
     overflow-x: hidden;
+    height: 100%;
+    margin: 0;
 }
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #090d16;
+    background-color: #03060a;
     color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-/* Premium Polished Glass card design */
+/* تصميم الكرت الزجاجي (نفس الصورة الأصلية بدقة مع تأثير بلور) */
 .glass-card {
-    background: linear-gradient(135deg, rgba(17, 22, 37, 0.9) 0%, rgba(13, 18, 31, 0.95) 100%);
-    backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, rgba(13, 17, 26, 0.7) 0%, rgba(9, 12, 20, 0.8) 100%);
+    backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-top: 1px solid rgba(77, 114, 245, 0.3);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(77, 114, 245, 0.1);
+    border-top: 1px solid rgba(77, 114, 245, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    padding: 30px;
 }
 
+/* تأثير الحلقة الزجاجية حول البطاقة */
 .glass-ring {
-    border-radius: 24px;
+    border-radius: 50%;
     border: 1px solid rgba(77, 114, 245, 0.15);
-    padding: 8px;
-    box-shadow: 0 0 30px rgba(77, 114, 245, 0.05);
+    padding: 10px;
+    box-shadow: 0 0 30px rgba(77, 114, 245, 0.1);
 }
 
 .glow-text { text-shadow: 0 0 15px rgba(77, 114, 245, 0.5); }
 
-/* Shake Error Animations */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-5px); }
-    40%, 80% { transform: translateX(5px); }
+/* تأثير الإشعار المنبثق (Toast) */
+.toast-enter {
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-.animate-shake {
-    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-    border-color: #ef4444 !important;
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2) !important;
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
 
-/* Highly realistic raw technical layout table structures */
-.data-table th { background-color: #080b13; border-bottom: 1px solid #1e293b; }
-.data-table tr { border-bottom: 1px solid #0f172a; }
-.data-table tr:hover { background-color: #0f172a; }
-
-/* Smooth slim scroll designs */
-::-webkit-scrollbar { width: 4px; height: 4px; }
+/* سكرول بار أنيق */
+::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #4d72f5; }
